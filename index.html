@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Остаток денег при НДС — ИП на УСН 15%, 2026–2027</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  color-scheme:light;
+  --bg:#f3efe7;--surface:#ffffff;--surface-2:#faf7f0;--surface-3:#f0eadf;
+  --line:#d9cfbf;--line-strong:#b9ab95;
+  --text:#242424;--muted:#6e655a;--soft:#6e655a;--header-height:112px;
+  --good:#1f7a4d;--good-strong:#14643d;--good-bg:rgba(31,122,77,.10);--good-bg-strong:rgba(31,122,77,.16);--good-line:rgba(31,122,77,.55);
+  --warn:#9a6417;--warn-bg:rgba(154,100,23,.12);--warn-line:rgba(154,100,23,.42);
+  --bad:#b24242;--bad-bg:rgba(178,66,66,.10);--bad-line:rgba(178,66,66,.38);
+  --info:#2f6f86;--info-bg:rgba(47,111,134,.11);--info-line:rgba(47,111,134,.40);
+  --gold:#b89445;--gold-bg:rgba(184,148,69,.12);
+  --focus:#2f6f86;--radius:10px;--shadow:0 12px 28px rgba(66,52,33,.10);--shadow-strong:0 16px 38px rgba(66,52,33,.16);
+  --s1:var(--surface);--s2:var(--surface-2);--s3:var(--surface-3);
+  --b1:var(--line);--b2:var(--line);--b3:var(--line-strong);
+  --g:var(--good);--gd:var(--good-bg);--gl:rgba(47,125,87,.06);
+  --am:var(--warn);--amd:var(--warn-bg);
+  --rd:var(--bad);--rdd:var(--bad-bg);
+  --bl:var(--info);--bld:var(--info-bg);
+  --t1:var(--text);--t2:var(--muted);--t3:var(--soft);
+  --r:var(--radius);--rs:7px
+}
+html{font-size:14px}
+body{background:linear-gradient(180deg,rgba(184,148,69,.08),transparent 360px),var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif;line-height:1.55;min-height:100vh}
+button,input,select{font:inherit}
+button:focus-visible,a:focus-visible,summary:focus-visible,input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.mono{font-family:"Consolas","Courier New",monospace}
+.app-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);box-shadow:0 10px 26px rgba(66,52,33,.10);backdrop-filter:blur(12px)}
+.header-main{display:grid;grid-template-columns:minmax(250px,280px) minmax(0,1fr) minmax(290px,auto);align-items:center;gap:16px;padding:14px 22px}
+.brand{display:flex;align-items:center;gap:12px;min-width:250px}
+.logo-badge{width:42px;height:42px;background:linear-gradient(180deg,rgba(31,122,77,.18),rgba(31,122,77,.08));border:1px solid rgba(31,122,77,.48);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:950;color:#145f3b;box-shadow:0 8px 18px rgba(31,122,77,.12);flex:0 0 auto}
+.brand h1{margin:0;font-size:18px;line-height:1.15;color:var(--text);font-weight:900;letter-spacing:0}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.25}
+.header-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
+.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
+.top-slider{display:grid;grid-template-columns:minmax(0,1fr) 76px;gap:8px;align-items:center;min-width:0;padding:9px 10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 16px rgba(66,52,33,.06)}
+.top-slider label{grid-column:1/-1;font-size:12px;font-weight:850;color:var(--muted);line-height:1.3}
+.top-slider input[type=range]{width:100%;min-width:0}
+.percent-input-wrap{width:76px;min-width:76px;display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);padding:6px 8px}
+.percent-input-wrap:focus-within{border-color:var(--focus);box-shadow:0 0 0 2px rgba(184,148,69,.12)}
+.percent-input-wrap input{width:100%;min-width:0;border:0;outline:0;background:transparent;text-align:right;color:var(--text);font-family:"Consolas","Courier New",monospace;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+.percent-input-wrap span{margin-left:4px;color:var(--muted);font-size:12px;font-weight:700}
+.reset-btn,#resetBtn{padding:12px 16px;border-radius:10px;border:1px solid #b9ab95;background:#ffffff;color:#5f554a;font-weight:850;cursor:pointer;box-shadow:0 4px 12px rgba(66,52,33,.08);flex:0 0 auto;font-size:12px;transition:background .15s,border-color .15s,color .15s,box-shadow .15s;white-space:nowrap}
+.reset-btn:hover,#resetBtn:hover{background:#f5efe4;border-color:#b89445;color:#3d342b;box-shadow:0 6px 16px rgba(66,52,33,.12)}
+.reset-btn:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+#bestBadge{display:grid;align-content:center;gap:1px;min-width:190px;max-width:230px;padding:10px 14px;border-radius:12px;background:linear-gradient(180deg,rgba(31,122,77,.18),rgba(31,122,77,.09));border:1px solid rgba(31,122,77,.45);border-left:5px solid #1f7a4d;box-shadow:0 8px 20px rgba(31,122,77,.14);color:var(--good);line-height:1.2}
+#bestBadge span,#bestBadge strong{display:block;min-width:0}
+#bestBadge .caption,#bestBadge span:first-child{font-size:11px;line-height:1.1;text-transform:uppercase;letter-spacing:.06em;color:#426b55;font-weight:900}
+#bestLabel{font-size:13px;font-weight:950;color:#145f3b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bestBadge #bestArrow{display:none}
+#bestBadge strong,#bestBadge .best-value{display:block;margin-top:3px;color:#145f3b;font-family:"Consolas","Courier New",monospace;font-size:15px;line-height:1.2;font-weight:950}
+.layout{display:grid;grid-template-columns:328px minmax(0,1fr);min-height:calc(100vh - var(--header-height))}
+.sb{background:linear-gradient(180deg,var(--surface-2),#f5efe5);border-right:1px solid var(--line-strong);box-shadow:8px 0 24px rgba(66,52,33,.05);padding:18px 14px;overflow-y:auto;height:calc(100vh - var(--header-height));position:sticky;top:var(--header-height)}
+.sb-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:12px}
+.sb-note{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 16px}
+.fld{margin-bottom:14px}
+.input-group{border:0;min-width:0;margin:0 0 8px;padding:0}
+.input-group legend{font-size:14px;font-weight:800;color:var(--text);padding:0 0 10px}
+.vat-field{padding-left:12px;border-left:2px solid var(--line-strong)}
+.flabel{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2);margin-bottom:6px;font-weight:600}
+.finp{display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);padding:8px 11px;transition:border-color .15s,box-shadow .15s}
+.finp:focus-within{border-color:var(--focus);box-shadow:0 0 0 2px rgba(184,148,69,.12)}
+.finp input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:14px;font-family:"Consolas","Courier New",monospace;width:100%;min-width:0}
+.select-control{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);padding:9px 34px 9px 11px;outline:none;color:var(--text);cursor:pointer}
+.select-control:focus-visible{border-color:var(--focus);box-shadow:0 0 0 2px rgba(184,148,69,.12)}
+.year-note{font-size:11px;color:var(--muted);line-height:1.45;margin-top:8px}
+.fcur{color:var(--t3);font-size:13px;margin-left:8px;flex-shrink:0}
+.fhint{display:block;font-size:12px;color:var(--muted);line-height:1.5;margin-top:7px}
+.field-help{font-size:12px;line-height:1.5;color:var(--muted);margin-top:5px}
+.field-help summary{cursor:pointer;color:var(--info);width:fit-content;padding:3px 0;font-weight:600}
+.field-help p{margin-top:5px}
+.field-error{font-size:12px;color:var(--bad);line-height:1.45;margin-top:6px;font-weight:600}
+.top-slider .field-error{grid-column:1/-1;margin-top:0}
+.has-error .finp,.has-error .percent-input-wrap{border-color:var(--bad);box-shadow:0 0 0 1px var(--bad)}
+.auto-updated .finp{border-color:var(--info);background:#eef5f8;box-shadow:0 0 0 1px var(--info)}
+.auto-note{display:block;color:var(--info);font-size:11px;min-height:18px;margin-top:3px}
+.auto-note[hidden]{display:block;visibility:hidden}
+.results-link{display:none;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;margin-bottom:16px;border-radius:8px;background:var(--good-strong);color:white;font-weight:700;text-decoration:none}
+#bestBadge.is-pending{background:var(--surface-2);border-color:var(--line-strong);box-shadow:none}
+.input-guide{font-size:12px;line-height:1.5;color:var(--muted);padding:12px;border:1px solid var(--line);border-radius:var(--rs);background:var(--surface);margin-bottom:14px}
+.input-guide strong{display:block;color:var(--text);margin-bottom:5px}
+.input-guide p+p{margin-top:7px}
+.blk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:14px;box-shadow:var(--shadow)}
+.blk-title{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+.sval{font-family:"Consolas","Courier New",monospace;font-size:13px;color:var(--g);font-weight:700}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:5px;border-radius:999px;background:linear-gradient(to right,var(--good) 0%,var(--good) var(--pct,50%),var(--line-strong) var(--pct,50%),var(--line-strong) 100%);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--good);border:2px solid var(--surface);cursor:pointer;box-shadow:0 2px 7px rgba(64,52,35,.26)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--good);border:2px solid var(--surface);cursor:pointer;box-shadow:0 2px 7px rgba(64,52,35,.26)}
+.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);padding:10px 12px;margin-top:4px;box-shadow:var(--shadow)}
+.ref summary,.details-block summary{cursor:pointer;color:var(--muted);font-weight:900;list-style:none}
+.ref summary::-webkit-details-marker,.details-block summary::-webkit-details-marker{display:none}
+.ref summary:before,.details-block summary:before{content:"+";display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-right:7px;border-radius:50%;background:var(--gold-bg);color:#7b5d22;font-weight:900}
+.ref[open] summary:before,.details-block[open] summary:before{content:"−"}
+.ref-row{display:flex;justify-content:space-between;gap:12px;font-size:11.5px;color:var(--t2);padding:2px 0}
+.ref summary+.ref-row{margin-top:9px}
+.ref-row span:last-child{font-family:"Consolas","Courier New",monospace;color:var(--text);white-space:nowrap}
+.main{padding:18px 20px;min-width:0;scroll-margin-top:calc(var(--header-height) + 12px)}
+.intro{margin-bottom:14px}
+.intro h2{font-size:21px;line-height:1.3;margin-bottom:6px;color:var(--text)}
+.intro p{font-size:13px;line-height:1.5;color:var(--muted);max-width:850px}
+.comparison-note,.result-note{font-size:13px;line-height:1.55;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:14px}
+.comparison-note strong,.result-note strong{color:var(--text)}
+.result-note p+p{margin-top:8px}
+.cash-disclaimer{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 14px}
+.reference-note{font-size:11px;line-height:1.45;color:var(--muted);border-top:1px solid var(--line);padding-top:8px;margin-top:10px}
+.notes-content{font-size:13px;line-height:1.55;color:var(--muted);margin-top:10px}
+.notes-content p+p{margin-top:8px}
+.banner{border-radius:9px;box-shadow:0 10px 24px rgba(66,52,33,.09);padding:12px 15px;font-size:12.5px;margin-bottom:14px;line-height:1.55;font-weight:800}
+.banner.warn{background:linear-gradient(180deg,rgba(154,100,23,.16),rgba(154,100,23,.08));border:1px solid rgba(154,100,23,.38);border-left:7px solid rgba(154,100,23,.82);color:#744b12;font-weight:850}
+.banner.info{background:linear-gradient(180deg,rgba(47,111,134,.16),rgba(47,111,134,.08));border:1px solid rgba(47,111,134,.36);border-left:7px solid rgba(47,111,134,.82);color:#24586b;box-shadow:0 8px 20px rgba(47,111,134,.08);font-weight:850}
+.banner.bad{background:var(--bad-bg);border:1px solid var(--bad-line);border-left:4px solid var(--bad);color:var(--bad)}
+#decisionBanner{font-size:15px;line-height:1.55;padding:16px}
+.warn-list .banner{font-weight:600;box-shadow:none}
+.warn-list{display:grid;gap:8px;margin-bottom:14px}
+.warn-list[hidden]{display:none}
+.section-head{margin:0 0 11px}
+.section-head h2{margin:0;font-size:15px;line-height:1.2;letter-spacing:.05em;color:#6f5d44;font-weight:950;text-transform:uppercase}
+.section-head h2:before{content:"";display:inline-block;width:6px;height:16px;margin-right:9px;border-radius:4px;background:#b89445;vertical-align:-2px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.scenario-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 20px rgba(66,52,33,.08);padding:15px;min-height:156px;overflow:hidden}
+.scenario-card:before{content:"";position:absolute;left:0;top:0;right:0;height:5px;background:var(--line-strong)}
+.scenario-card.is-winner{background:linear-gradient(180deg,rgba(31,122,77,.14),rgba(31,122,77,.04) 38%,#ffffff 100%);border:2px solid rgba(31,122,77,.62);box-shadow:0 16px 36px rgba(31,122,77,.18),0 0 0 1px rgba(31,122,77,.10);transform:translateY(-2px)}
+.scenario-card.is-winner:before{height:7px;background:linear-gradient(90deg,#14643d 0%,#238d5a 100%)}
+.scenario-card.is-winner h3,.scenario-card.is-winner .name{color:#163f2c}
+.scenario-card.is-winner .finance-value,.scenario-card.is-winner .bigval{color:#145f3b;font-weight:950}
+.scenario-card.is-winner .metric-row.total span,.scenario-card.is-winner .mrow.total span{color:#145f3b}
+.scenario-card.is-compare{background:#ffffff;border:1px solid rgba(47,111,134,.24);box-shadow:0 8px 20px rgba(66,52,33,.07)}
+.scenario-card.is-compare:before{height:5px;background:rgba(47,111,134,.45)}
+.scenario-card.is-disabled,.scenario-card.is-reference{background:#f7f2ea;border:1px dashed #d6c8b5;box-shadow:none;color:var(--muted)}
+.scenario-card.is-disabled:before,.scenario-card.is-reference:before{height:5px;background:#cbbca6}
+.scenario-card.is-disabled h3,.scenario-card.is-reference h3,.scenario-card.is-disabled .name,.scenario-card.is-reference .name{color:var(--muted)}
+.scenario-card.is-disabled .bigval,.scenario-card.is-disabled .mrow span:last-child{color:var(--muted)}
+.mini{position:relative}
+.mini-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:9px}
+.mini .name{font-size:13.5px;font-weight:850;line-height:1.25;margin:0}
+.tag{font-family:"Consolas","Courier New",monospace;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900;line-height:1;white-space:nowrap}
+.tag.good,.tag.best{color:#145f3b;background:rgba(31,122,77,.18);border:1px solid rgba(31,122,77,.42)}
+.tag.compare{color:#2f6f86;background:rgba(47,111,134,.10);border:1px solid rgba(47,111,134,.28)}
+.tag.disabled{color:#a85757;background:rgba(178,66,66,.10);border:1px solid rgba(178,66,66,.28)}
+.mrows{display:grid;gap:6px}
+.mrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;font-size:12px}
+.mrow span:first-child{color:var(--t2)}
+.mrow span:last-child{font-family:"Consolas","Courier New",monospace;text-align:right;font-weight:700}
+.mrow.total{border-top:1px solid var(--line);margin-top:3px;padding-top:7px;font-weight:800}
+.mrow.total span:first-child,.mrow.total span:last-child{color:var(--t1)}
+.owner-cards{align-items:stretch}
+.owner-metrics{display:grid;gap:10px;margin-top:12px}
+.owner-metric{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:6px 12px;padding-top:9px;border-top:1px solid rgba(217,207,191,.78)}
+.owner-metric:first-child{border-top:0;padding-top:0}
+.owner-metric span{color:var(--muted);font-size:12px;font-weight:800}
+.owner-metric strong{font-family:"Consolas","Courier New",monospace;color:var(--text);font-size:15px;font-weight:900;text-align:right;white-space:nowrap}
+.owner-metric.primary{display:grid;gap:4px;align-items:start}
+.owner-metric.primary strong{font-size:23px;line-height:1.15;text-align:left;color:#145f3b}
+.scenario-card.is-disabled .owner-metric strong{color:var(--muted)}
+.bigval{font-family:"Consolas","Courier New",monospace;font-size:19px;font-weight:850;margin:4px 0 4px;line-height:1.25}
+.sub{font-size:11px;color:var(--t3);line-height:1.35}
+.details-block{background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 20px rgba(66,52,33,.06);padding:12px 14px;margin-bottom:12px}
+.details-note{font-size:12px;color:var(--muted);margin:8px 0 10px}
+.cmp-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow-x:auto;margin:10px 0 0}
+.cmp-head{padding:13px 16px 10px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cmp-note{font-size:11px;color:var(--t3);font-weight:500}
+.cmp-table{width:100%;min-width:900px;border-collapse:collapse}
+.cmp-table th{padding:9px 14px;background:var(--surface-2);font-size:13px;font-weight:700;color:var(--muted);text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.cmp-table th:first-child{text-align:left}
+.cmp-table td{padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;text-align:right;font-family:"Consolas","Courier New",monospace;font-weight:600}
+.cmp-table td:first-child{text-align:left;color:var(--t2);font-family:"Segoe UI",Arial,sans-serif;font-size:12.5px;font-weight:600}
+.cmp-table tbody tr:nth-child(even) td{background:rgba(221,212,198,.16)}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table tr.total td{background:var(--surface-2);font-weight:800}
+.cmp-table tr.result td{background:rgba(47,125,87,.07);font-weight:800}
+.muted{color:var(--t3)!important}
+.minus{color:var(--rd)!important}
+.plus{color:var(--g)!important}
+.wcol{background:rgba(47,125,87,.06)}
+.wval{color:var(--g)!important;font-weight:800}
+.offcol{background:var(--surface-2)}
+.src{margin-top:0}
+.src-body{font-size:12px;color:var(--t3);line-height:1.7}
+.src-body p+p{margin-top:8px}
+.model-note{color:#744b12;font-weight:750}
+@media(max-width:1480px){.app-header{position:static}.header-main{grid-template-columns:minmax(0,1fr) auto}.header-controls{grid-column:1/-1;grid-row:2}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.sb{top:0;height:100vh}.main{padding:14px;scroll-margin-top:12px}#bestBadge{max-width:none}}
+@media(max-width:960px){.layout{grid-template-columns:1fr;min-height:auto}.sb{position:static;height:auto;overflow-y:visible;border-right:0;border-bottom:1px solid var(--line)}.results-link{display:flex}}
+@media(max-width:760px){.header-main{grid-template-columns:1fr;padding:12px 14px}.header-controls{grid-template-columns:1fr;grid-column:auto;grid-row:auto}.brand{min-width:0}.header-actions{align-items:stretch;flex-wrap:wrap}#bestBadge{flex:1;min-width:0}}
+@media(max-width:600px){.cards{grid-template-columns:1fr}.cmp-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="header-main">
+    <div class="brand">
+      <div class="logo-badge">15%</div>
+      <div>
+        <h1>НДС: калькулятор остатка денег</h1>
+        <p>ИП на УСН «доходы минус расходы», полный год</p>
+      </div>
+    </div>
+    <div class="header-controls">
+      <div class="top-slider" title="Изменяет продажи и оплаты клиентов относительно базы 2025 года. Конечная цена одинакова во всех сценариях.">
+        <label for="buyerChange">Цены для клиентов</label>
+        <input type="range" id="buyerChange" min="-30" max="60" value="0" step="0.1">
+        <div class="percent-input-wrap">
+          <input type="text" id="buyerChangeInput" inputmode="decimal" value="0,0" aria-label="Цена покупателя, процент" aria-describedby="buyerChangeInputError">
+          <span>%</span>
+        </div>
+        <div class="field-error" id="buyerChangeInputError" hidden></div>
+      </div>
+      <div class="top-slider" title="Изменяет документы, оплаты поставщикам и связанные показатели входного НДС относительно базы 2025 года.">
+        <label for="supplierChange">Цены поставщиков</label>
+        <input type="range" id="supplierChange" min="-30" max="60" value="0" step="0.1">
+        <div class="percent-input-wrap">
+          <input type="text" id="supplierChangeInput" inputmode="decimal" value="0,0" aria-label="Цена поставщика, процент" aria-describedby="supplierChangeInputError">
+          <span>%</span>
+        </div>
+        <div class="field-error" id="supplierChangeInputError" hidden></div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="best" id="bestBadge">
+        <span id="bestCaption">Максимум остатка среди ставок НДС:</span>
+        <span id="bestLabel">—</span>
+        <span id="bestArrow"></span>
+        <strong id="bestValue"></strong>
+      </div>
+      <button type="button" class="reset-btn" id="resetBtn">Сбросить</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="sb">
+  <div class="sb-title">1. Проверьте исходные суммы</div>
+  <div class="sb-note">Заполнен пример на данных 2025 года. Выберите год прогноза и замените суммы своими. Ползунки меняют цены, все поля доступны для ручной правки.</div>
+  <a class="results-link" href="#results">Сравнить остаток денег ↓</a>
+
+  <div class="blk">
+    <div class="blk-title">Год расчёта</div>
+    <label class="flabel" for="calculationYear">Прогнозный год</label>
+    <select class="select-control" id="calculationYear">
+      <option value="2026">2026 год</option>
+      <option value="2027">2027 год</option>
+    </select>
+    <div class="year-note">Прогноз на полные 12 месяцев. Год меняет страховые взносы ИП. Суммы продаж и расходов общие для обоих годов; ручная доля входного НДС запоминается отдельно для каждого года.</div>
+  </div>
+
+  <fieldset class="input-group">
+  <legend>Продажи и деньги клиентов</legend>
+  <div class="fld">
+    <div class="flabel"><label for="revenueTotal">Продано товаров и услуг за год</label></div>
+    <div class="finp"><input type="text" id="revenueTotal" data-kind="money" inputmode="decimal" aria-describedby="revenueTotalHint revenueTotalError"><span class="fcur">₽</span></div>
+    <div class="field-error" id="revenueTotalError" hidden></div>
+    <div class="fhint" id="revenueTotalHint">Полная цена для клиентов, включая неоплаченные продажи. НДС сверху не добавляйте.</div>
+    <details class="field-help"><summary>Где взять сумму?</summary><p>В отчёте о продажах, актах и накладных за год. В прогнозе НДС выделяется из этой суммы.</p></details>
+  </div>
+  <div class="fld">
+    <div class="flabel"><label for="revenuePaid">Получено денег от клиентов</label></div>
+    <div class="finp"><input type="text" id="revenuePaid" data-kind="money" inputmode="decimal" aria-describedby="revenuePaidHint revenuePaidError"><span class="fcur">₽</span></div>
+    <div class="field-error" id="revenuePaidError" hidden></div>
+    <div class="fhint" id="revenuePaidHint">Полная сумма оплат и авансов клиентов. Без кредитов и переводов между своими счетами.</div>
+    <details class="field-help"><summary>Где взять сумму?</summary><p>В поступлениях по банку и кассе за год. НДС в прогнозе выделяется из полученной суммы автоматически.</p></details>
+  </div>
+  </fieldset>
+  <fieldset class="input-group">
+  <legend>Закупки и оплаты поставщикам</legend>
+  <div class="fld">
+    <div class="flabel"><label for="expensesTotal">Получено от поставщиков за год</label></div>
+    <div class="finp"><input type="text" id="expensesTotal" data-kind="money" inputmode="decimal" aria-describedby="expensesTotalHint expensesTotalError"><span class="fcur">₽</span></div>
+    <div class="field-error" id="expensesTotalError" hidden></div>
+    <div class="fhint" id="expensesTotalHint">Полная стоимость по документам, с НДС внутри. Неоплаченная часть из остатка денег не вычитается.</div>
+    <details class="field-help"><summary>Где взять сумму?</summary><p>В актах, накладных и УПД поставщиков за год. Учитывайте товары и услуги, а не только перечисленные поставщикам деньги.</p></details>
+  </div>
+  <div class="fld vat-field">
+    <div class="flabel"><label for="inputVatDeductibleDocs">НДС в документах поставщиков</label></div>
+    <div class="finp"><input type="text" id="inputVatDeductibleDocs" data-kind="money" inputmode="decimal" aria-describedby="inputVatDeductibleDocsHint vatLinkHint inputVatDeductibleDocsError"><span class="fcur">₽</span></div>
+    <div class="field-error" id="inputVatDeductibleDocsError" hidden></div>
+    <span class="auto-note" id="inputVatDeductibleDocsAuto" hidden>Пересчитано автоматически</span>
+    <div class="fhint" id="inputVatDeductibleDocsHint">Только НДС внутри стоимости закупок выше, не вся стоимость.</div>
+    <details class="field-help"><summary>Где взять сумму?</summary><p>В счетах-фактурах, УПД или отчёте бухгалтера. Сумму возможного вычета для прогноза согласуйте с бухгалтером.</p></details>
+  </div>
+  <div class="fld">
+    <div class="flabel"><label for="expensesPaid">Оплачено поставщикам за год</label></div>
+    <div class="finp"><input type="text" id="expensesPaid" data-kind="money" inputmode="decimal" aria-describedby="expensesPaidHint expensesPaidError"><span class="fcur">₽</span></div>
+    <div class="field-error" id="expensesPaidError" hidden></div>
+    <div class="fhint" id="expensesPaidHint">Фактически оплачено, с НДС внутри. Именно эта сумма вычитается из денег клиентов. Взносы ИП здесь не дублируйте.</div>
+    <details class="field-help"><summary>Где взять сумму?</summary><p>В оплатах по банку и кассе. В модели это и денежный расход, и расход для УСН: состав сверьте с бухгалтером по книге учёта доходов и расходов (КУДиР). Взносы ИП считаются отдельно.</p></details>
+  </div>
+  <div class="fld vat-field">
+    <div class="flabel"><label for="inputVatExpenseUsn">НДС внутри оплаченных расходов</label></div>
+    <div class="finp"><input type="text" id="inputVatExpenseUsn" data-kind="money" inputmode="decimal" aria-describedby="inputVatExpenseUsnHint vatLinkHint inputVatExpenseUsnError"><span class="fcur">₽</span></div>
+    <div class="field-error" id="inputVatExpenseUsnError" hidden></div>
+    <span class="auto-note" id="inputVatExpenseUsnAuto" hidden>Пересчитано автоматически</span>
+    <div class="fhint" id="inputVatExpenseUsnHint">Только НДС внутри оплат выше, не ваш платёж налога в бюджет.</div>
+    <details class="field-help"><summary>Где взять сумму?</summary><p>У бухгалтера по оплаченным расходам. Этот налог уже включён в сумму оплат — повторно прибавлять его не нужно.</p></details>
+  </div>
+  </fieldset>
+
+  <div class="input-guide" id="vatLinkHint">
+    <strong>Почему две суммы НДС меняются вместе?</strong>
+    <p>В модели у них общая доля закупок у поставщиков с НДС. Изменение любого поля НДС пересчитает второе, а изменение расходов сохранит выбранную долю. Корректировка действует отдельно для каждого года.</p>
+    <p>Ноль означает допущение, что все закупки без НДС, и обнуляет оба поля. Если сумма неизвестна, уточните её у бухгалтера, а не заменяйте нулём.</p>
+  </div>
+
+  <details class="ref">
+    <summary>Параметры <span id="paramsYear">2026</span></summary>
+    <div class="ref-row"><span>УСН</span><span>доходы минус расходы, 15%</span></div>
+    <div class="ref-row"><span>Минимальный налог</span><span>1% дохода УСН</span></div>
+    <div class="ref-row"><span>Сценарии НДС</span><span>5%, 7% и 22%</span></div>
+    <div class="ref-row"><span>Порог освобождения</span><span>20 млн ₽</span></div>
+    <div class="ref-row"><span>Фикс. взносы ИП</span><span id="fixedContribRef">57 390 ₽</span></div>
+    <div class="ref-row"><span>Макс. доп. 1%</span><span id="maxAddContribRef">321 818 ₽</span></div>
+  </details>
+</aside>
+
+<section class="main" id="results" tabindex="-1" aria-labelledby="resultsTitle">
+  <div class="intro">
+    <h2 id="resultsTitle">Остаток денег за <span id="comparisonYear">2026</span> год</h2>
+    <p id="cashBasisNote">Получено от клиентов − оплачено поставщикам − налоги и взносы.</p>
+  </div>
+  <div class="banner" id="decisionBanner" role="status" aria-live="polite"></div>
+  <div class="warn-list" id="warningList" hidden></div>
+
+  <div class="cards owner-cards" id="comparisonCards"></div>
+  <p class="cash-disclaimer" id="cashLimitsNote">Это не прибыль и не баланс счёта. Неоплаченные закупки не вычтены. Доступность ставок уточните с бухгалтером.</p>
+
+  <details class="details-block" id="calculationNotes" hidden>
+    <summary>Особенности расчёта <span id="notesCount"></span></summary>
+    <div class="notes-content" id="notesList"></div>
+  </details>
+
+  <details class="details-block src" id="cashExplanation">
+    <summary>Как считается остаток и что не учтено</summary>
+    <div class="src-body">
+      <p><strong>Остаток денег =</strong> получено от клиентов − оплачено поставщикам − НДС к уплате − УСН − взносы ИП.</p>
+      <p><strong>Это не прибыль и не баланс банковского счёта.</strong> Остаток денег на начало года, кредиты, пополнения своими средствами и неуказанные выплаты в расчёт не входят.</p>
+      <p><strong>Неоплаченные закупки из остатка денег не вычтены.</strong> Положительная сумма может оставаться при наличии долгов поставщикам — её нельзя автоматически считать свободными деньгами для личных расходов.</p>
+      <p>Налоги и взносы вычитаются в расчётной сумме за выбранный год, независимо от срока их фактической уплаты. Отрицательный остаток означает, что поступлений клиентов не хватает на введённые оплаты, налоги и взносы.</p>
+      <p>Все варианты рассчитываются за полный выбранный год на основе структуры показателей 2025 года. Конечная цена покупателя одинакова во всех сценариях и считается суммой, уже включающей соответствующий НДС.</p>
+      <p>При ставках 5% и 7% входной НДС поставщиков не принимается к вычету и остаётся в расходах УСН. При ставке 22% входной НДС по документам уменьшает НДС к уплате, а НДС внутри оплаченных расходов исключается из расходов УСН.</p>
+      <p>Варианты с НДС сравниваются по расчётному остатку денег: поступления клиентов минус фактические оплаты поставщикам, расчётные НДС, УСН и страховые взносы ИП за выбранный год. Вариант «Без НДС» — справочная база, он не участвует в выборе максимального остатка среди ставок НДС.</p>
+      <p>Закупки по документам сами по себе не уменьшают остаток денег: из него вычитаются только оплаты поставщикам. При этом увеличение закупок по документам может увеличить входной НДС и уменьшить НДС к уплате в модели, даже если сумма оплат не изменилась.</p>
+      <p>Превышение входного НДС над начисленным отражается отдельно как «НДС к переносу» и не прибавляется к остатку денег. Возможное возмещение НДС из бюджета в денежном результате не учтено.</p>
+      <p class="model-note">Это прогноз, а не готовый расчёт для декларации и не рекомендация перейти на ставку. Все НДС-сценарии рассчитаны с 1 января. Обязанность платить НДС, доступные ставки и дату начала их применения уточните с бухгалтером.</p>
+      <p class="model-note">Важно: сценарии НДС с 1 января являются сравнительной экономической моделью. Калькулятор не подтверждает право налогоплательщика добровольно отказаться от обязательного освобождения от НДС.</p>
+    </div>
+  </details>
+
+  <details class="details-block">
+    <summary>Показать подробный расчёт для проверки</summary>
+    <div class="details-note">Основной итог — остаток денег по формуле выше. Показатели по документам приведены справочно и не являются расчётом прибыли.</div>
+    <div class="cmp-card">
+    <div class="cmp-head">
+      <span>Подробный расчёт для проверки</span>
+      <span class="cmp-note">Сравниваем остаток денег только среди вариантов НДС 5%, 7% и 22%.</span>
+    </div>
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>Показатель</th>
+          <th>Без НДС — справочно</th>
+          <th>НДС 5%</th>
+          <th>НДС 7%</th>
+          <th>НДС 22% с вычетом</th>
+        </tr>
+      </thead>
+      <tbody id="detailRows"></tbody>
+    </table>
+    </div>
+  </details>
+
+</section>
+</div>
+
+<script>
+const originalDefaults={
+  revenueTotal:19439772.32,
+  revenuePaid:19537951.32,
+  expensesTotal:16631164.84,
+  expensesPaid:16336724.63,
+  inputVatExpenseUsn:2518339.70,
+  inputVatDeductibleDocs:2730060.12
+};
+
+// Исходные доли 2025 года. Одна ручная корректировка меняет обе суммы НДС,
+// сохраняя их пропорциональный пересчёт вместе с соответствующими расходами.
+const SOURCE_RATIOS={
+  inputVatExpenseUsn:2518339.70/16336724.63,
+  inputVatDeductibleDocs:2730060.12/16631164.84
+};
+
+function createVatShareFactorsByYear(){
+  return {
+    2026:1,
+    2027:1
+  };
+}
+
+function createZeroVatWarningState(){
+  return {
+    2026:false,
+    2027:false
+  };
+}
+
+const sliderDefaults={
+  buyerChange:0,
+  supplierChange:0
+};
+
+let baseValues={...originalDefaults};
+let currentValues={...originalDefaults};
+let vatShareFactorsByYear=createVatShareFactorsByYear();
+let zeroVatWarningShownByYear=createZeroVatWarningState();
+const inputErrors=new Map();
+const autoUpdateTimers=new Map();
+
+// Фиксированные взносы и предел дополнительного 1% зависят от выбранного года.
+const TAX_PARAMS_BY_YEAR={
+  2026:{
+    year:2026,
+    fixedContrib:57390,
+    maxAddContrib:321818
+  },
+  2027:{
+    year:2027,
+    fixedContrib:61154,
+    maxAddContrib:342923
+  }
+};
+
+const COMMON_TAX_PARAMS={
+  usnRate:.15,
+  minTaxRate:.01,
+  addFree:300000,
+  vatExemptionThreshold:20000000
+};
+
+const VAT_VARIANTS=[
+  {
+    key:"special5",
+    baseTitle:"НДС 5%",
+    vatRate:.05,
+    allowInputVatDeduction:false
+  },
+  {
+    key:"special7",
+    baseTitle:"НДС 7%",
+    vatRate:.07,
+    allowInputVatDeduction:false
+  },
+  {
+    key:"standard22",
+    baseTitle:"НДС 22% с вычетом",
+    vatRate:.22,
+    allowInputVatDeduction:true
+  }
+];
+
+const VARIANTS=[
+  {
+    key:"noVat",
+    baseTitle:"Без НДС",
+    vatRate:0,
+    allowInputVatDeduction:false,
+    reference:true
+  },
+  ...VAT_VARIANTS
+];
+
+const CHANGE_LIMITS={
+  min:-30,
+  max:60
+};
+
+const moneyFmt=new Intl.NumberFormat("ru-RU",{style:"currency",currency:"RUB",minimumFractionDigits:2,maximumFractionDigits:2});
+const numFmt=new Intl.NumberFormat("ru-RU",{minimumFractionDigits:2,maximumFractionDigits:2});
+const integerFmt=new Intl.NumberFormat("ru-RU",{maximumFractionDigits:0});
+const pctFmt=new Intl.NumberFormat("ru-RU",{minimumFractionDigits:1,maximumFractionDigits:1});
+const millionFmt=new Intl.NumberFormat("ru-RU",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function parseFormattedNumber(value,suffix){
+  let text=String(value).trim().replace(/\u2212/g,"-").replace(/[\u00a0\u202f]/g," ");
+  if(text.endsWith(suffix))text=text.slice(0,-suffix.length).trim();
+  // Проверяем всю строку: пустота, обрывок числа и текст не означают ноль.
+  if(!/^[+-]?(?:\d+|\d{1,3}(?: \d{3})+)(?:[.,]\d+)?$/.test(text))return NaN;
+  const number=Number(text.replace(/ /g,"").replace(",","."));
+  return Number.isFinite(number)?number:NaN;
+}
+
+function parseN(value){
+  return parseFormattedNumber(value,"₽");
+}
+
+function setInputError(id,message){
+  const input=el(id);
+  const error=el(id+"Error");
+  if(message)inputErrors.set(id,message);
+  else inputErrors.delete(id);
+  input.setAttribute("aria-invalid",message?"true":"false");
+  input.closest(".fld, .top-slider").classList.toggle("has-error",Boolean(message));
+  error.textContent=message;
+  error.hidden=!message;
+}
+
+function clearAutoUpdate(id){
+  clearTimeout(autoUpdateTimers.get(id));
+  autoUpdateTimers.delete(id);
+  const note=el(id+"Auto");
+  if(note){
+    note.hidden=true;
+    el(id).closest(".fld").classList.remove("auto-updated");
+  }
+}
+
+function showAutoUpdate(id){
+  if(!el(id+"Auto"))return;
+  clearAutoUpdate(id);
+  el(id+"Auto").hidden=false;
+  el(id).closest(".fld").classList.add("auto-updated");
+  autoUpdateTimers.set(id,setTimeout(function(){clearAutoUpdate(id);},2400));
+}
+
+function round2(n){
+  return Math.round((n+Number.EPSILON)*100)/100;
+}
+
+function money(n){
+  return moneyFmt.format(round2(Number(n)||0));
+}
+
+function wholeMoney(n){
+  return integerFmt.format(round2(Number(n)||0))+" ₽";
+}
+
+function compactMoney(n){
+  const value=round2(Number(n)||0);
+  if(Math.abs(value)>=1000000)return millionFmt.format(value/1000000)+" млн ₽";
+  if(Math.abs(value)>=1000)return millionFmt.format(value/1000)+" тыс ₽";
+  return numFmt.format(value)+" ₽";
+}
+
+function pct(n){
+  return pctFmt.format(Number.isFinite(n)?n*100:0)+"%";
+}
+
+function pctPlain(n){
+  return pctFmt.format(Number.isFinite(n)?n:0)+"%";
+}
+
+function pctInput(n){
+  return pctFmt.format(Number.isFinite(n)?n:0);
+}
+
+function inputNumber(n){
+  return numFmt.format(round2(Number(n)||0));
+}
+
+function parseChangeValue(v){
+  return parseFormattedNumber(v,"%");
+}
+
+function clampChangeValue(v){
+  return Math.min(CHANGE_LIMITS.max,Math.max(CHANGE_LIMITS.min,v));
+}
+
+function setChangeControlValue(rangeId,value){
+  const v=round2(clampChangeValue(Number(value)||0));
+  const range=el(rangeId);
+  if(range)range.value=v;
+  const input=el(rangeId+"Input");
+  if(input)input.value=pctInput(v);
+}
+
+function setControlValue(id,value){
+  const node=el(id);
+  if(!node)return;
+  if(id==="buyerChange"||id==="supplierChange"){
+    setChangeControlValue(id,value);
+    return;
+  }
+  if(node.type==="range")node.value=value;
+  else node.value=inputNumber(value);
+}
+
+function buyerFactor(){
+  return 1+clampChangeValue(Number(el("buyerChange").value)||0)/100;
+}
+
+function supplierFactor(){
+  return 1+clampChangeValue(Number(el("supplierChange").value)||0)/100;
+}
+
+function selectedCalculationYear(){
+  return Number(el("calculationYear").value)===2027?2027:2026;
+}
+
+function updateCurrentValues(){
+  const bf=buyerFactor();
+  const sf=supplierFactor();
+  const vatShareFactor=vatShareFactorsByYear[selectedCalculationYear()];
+  const revenueTotal=baseValues.revenueTotal*bf;
+  const revenuePaid=baseValues.revenuePaid*bf;
+  const expensesTotal=baseValues.expensesTotal*sf;
+  const expensesPaid=baseValues.expensesPaid*sf;
+  currentValues={
+    revenueTotal,
+    revenuePaid,
+    expensesTotal,
+    expensesPaid,
+    inputVatExpenseUsn:expensesPaid*SOURCE_RATIOS.inputVatExpenseUsn*vatShareFactor,
+    inputVatDeductibleDocs:expensesTotal*SOURCE_RATIOS.inputVatDeductibleDocs*vatShareFactor
+  };
+}
+
+function writeCurrentFields(skipId,highlightLinked){
+  Object.entries(currentValues).forEach(function(entry){
+    const id=entry[0];
+    const value=entry[1];
+    if(id===skipId||inputErrors.has(id))return;
+    const changed=round2(parseN(el(id).value))!==round2(value);
+    setControlValue(id,value);
+    if(highlightLinked&&changed)showAutoUpdate(id);
+  });
+}
+
+function refreshCurrentFields(skipId,highlightLinked){
+  updateCurrentValues();
+  writeCurrentFields(skipId,highlightLinked);
+}
+
+function handleManualFieldInput(id,formatEdited){
+  const entered=parseN(el(id).value);
+  clearAutoUpdate(id);
+  if(!Number.isFinite(entered)||entered<0){
+    setInputError(id,"Введите сумму от 0, например 1 234,56. Пустое поле не считается нулём.");
+    return;
+  }
+  const isVat=id==="inputVatExpenseUsn"||id==="inputVatDeductibleDocs";
+  const expenseId=id==="inputVatExpenseUsn"?"expensesPaid":"expensesTotal";
+  if(isVat&&entered>0&&currentValues[expenseId]===0){
+    setInputError(id,"Сначала укажите стоимость закупок в поле выше: при нулевой сумме НДС не может быть положительным.");
+    return;
+  }
+  setInputError(id,"");
+  if(id==="revenueTotal"||id==="revenuePaid"){
+    baseValues[id]=entered/buyerFactor();
+    refreshCurrentFields(formatEdited?null:id,true);
+    return;
+  }
+  if(id==="expensesPaid"||id==="expensesTotal"){
+    baseValues[id]=entered/supplierFactor();
+    refreshCurrentFields(formatEdited?null:id,true);
+    return;
+  }
+  if(isVat){
+    // Явная правка НДС задаёт общую долю и обновляет оба связанных поля.
+    setInputError("inputVatExpenseUsn","");
+    setInputError("inputVatDeductibleDocs","");
+    const expenseAmount=currentValues[expenseId];
+    const sourceVat=expenseAmount*SOURCE_RATIOS[id];
+    const calculationYear=selectedCalculationYear();
+    vatShareFactorsByYear[calculationYear]=sourceVat!==0
+      ?entered/sourceVat
+      :0;
+    refreshCurrentFields(formatEdited?null:id,true);
+    if(entered!==0){
+      zeroVatWarningShownByYear[calculationYear]=false;
+    }else if(formatEdited&&!zeroVatWarningShownByYear[calculationYear]){
+      zeroVatWarningShownByYear[calculationYear]=true;
+      window.alert("Вы указали 0 НДС. Делаем допущение, что все поступления от поставщиков были без НДС.");
+    }
+  }
+}
+
+function handleSliderInput(rangeId){
+  setInputError(rangeId+"Input","");
+  refreshCurrentFields(null,true);
+}
+
+function handlePercentInput(rangeId,rawValue,formatInput){
+  const inputId=rangeId+"Input";
+  const value=parseChangeValue(rawValue);
+  if(!Number.isFinite(value)||value<CHANGE_LIMITS.min||value>CHANGE_LIMITS.max){
+    setInputError(inputId,"Введите процент от −30 до 60, например 3 или −3,5.");
+    return;
+  }
+  setInputError(inputId,"");
+  setSlider(rangeId,inputId,value,formatInput?null:inputId);
+  refreshCurrentFields(null,true);
+}
+
+function resetValues(){
+  Array.from(inputErrors.keys()).forEach(function(id){setInputError(id,"");});
+  Array.from(autoUpdateTimers.keys()).forEach(clearAutoUpdate);
+  baseValues={...originalDefaults};
+  currentValues={...originalDefaults};
+  vatShareFactorsByYear=createVatShareFactorsByYear();
+  zeroVatWarningShownByYear=createZeroVatWarningState();
+  el("calculationYear").value="2026";
+  setControlValue("buyerChange",sliderDefaults.buyerChange);
+  setControlValue("supplierChange",sliderDefaults.supplierChange);
+  refreshCurrentFields();
+  render();
+}
+
+function readState(){
+  return {
+    ...currentValues,
+    calculationYear:Number(el("calculationYear").value),
+    buyerChange:clampChangeValue(Number(el("buyerChange").value)||0),
+    supplierChange:clampChangeValue(Number(el("supplierChange").value)||0)
+  };
+}
+
+function normalizeState(state){
+  const calculationYear=Number(state.calculationYear)===2027?2027:2026;
+  return {
+    revenueTotal:Number(state.revenueTotal)||0,
+    revenuePaid:Number(state.revenuePaid)||0,
+    expensesTotal:Number(state.expensesTotal)||0,
+    expensesPaid:Number(state.expensesPaid)||0,
+    inputVatExpenseUsn:Number(state.inputVatExpenseUsn)||0,
+    inputVatDeductibleDocs:Number(state.inputVatDeductibleDocs)||0,
+    calculationYear,
+    buyerChange:Number(state.buyerChange)||0,
+    supplierChange:Number(state.supplierChange)||0
+  };
+}
+
+function scenarioBase(state){
+  const revenueTotal=round2(state.revenueTotal);
+  const revenuePaid=round2(state.revenuePaid);
+  const expensesTotal=round2(state.expensesTotal);
+  const expensesPaid=round2(state.expensesPaid);
+  const inputVatExpenseUsn=round2(state.inputVatExpenseUsn);
+  const inputVatDeductibleDocs=round2(state.inputVatDeductibleDocs);
+  return {
+    revenueTotal,
+    revenuePaid,
+    expensesTotal,
+    expensesPaid,
+    inputVatExpenseUsn,
+    inputVatDeductibleDocs,
+    vatDocsMinusExpenseVat:round2(inputVatDeductibleDocs-inputVatExpenseUsn)
+  };
+}
+
+function calcVariant(variant,base,taxParams){
+  const vatRate=variant.vatRate;
+  const hasVat=vatRate>0;
+
+  // Продажи и оплаты заданы конечными суммами с НДС.
+  const incomeForUsn=hasVat
+    ?round2(base.revenuePaid/(1+vatRate))
+    :base.revenuePaid;
+  const vatSales=hasVat
+    ?round2(base.revenueTotal*vatRate/(1+vatRate))
+    :0;
+  const advanceBase=hasVat
+    ?round2(Math.max(base.revenuePaid-base.revenueTotal,0))
+    :0;
+  const vatAdvance=hasVat
+    ?round2(advanceBase*vatRate/(1+vatRate))
+    :0;
+  const vatAccrued=round2(vatSales+vatAdvance);
+
+  const inputVatDeduction=variant.allowInputVatDeduction
+    ?base.inputVatDeductibleDocs
+    :0;
+  const vatPay=hasVat
+    ?round2(Math.max(vatAccrued-inputVatDeduction,0))
+    :0;
+  const vatCarry=variant.allowInputVatDeduction
+    ?round2(Math.max(inputVatDeduction-vatAccrued,0))
+    :0;
+
+  const expensesForUsn=variant.allowInputVatDeduction
+    ?round2(Math.max(base.expensesPaid-base.inputVatExpenseUsn,0))
+    :base.expensesPaid;
+
+  const netSalesAccrual=hasVat
+    ?round2(base.revenueTotal/(1+vatRate))
+    :base.revenueTotal;
+  const netExpensesAccrual=variant.allowInputVatDeduction
+    ?round2(Math.max(base.expensesTotal-base.inputVatDeductibleDocs,0))
+    :base.expensesTotal;
+  const accrualResult=round2(netSalesAccrual-netExpensesAccrual);
+
+  // Для УСН «доходы минус расходы» дополнительный 1% считается с разницы минус 300 000 ₽.
+  const addBase=round2(Math.max(
+    incomeForUsn-expensesForUsn-COMMON_TAX_PARAMS.addFree,
+    0
+  ));
+  const addContrib=round2(Math.min(
+    addBase*.01,
+    taxParams.maxAddContrib
+  ));
+  const usnBase=round2(
+    incomeForUsn-
+    expensesForUsn-
+    taxParams.fixedContrib-
+    addContrib
+  );
+  const usn15=round2(
+    Math.max(usnBase,0)*COMMON_TAX_PARAMS.usnRate
+  );
+  const minTax=round2(
+    Math.max(incomeForUsn,0)*COMMON_TAX_PARAMS.minTaxRate
+  );
+  const usnPay=round2(Math.max(usn15,minTax));
+
+  const totalTaxes=round2(
+    vatPay+
+    usnPay+
+    taxParams.fixedContrib+
+    addContrib
+  );
+  const financialResult=round2(
+    base.revenuePaid-
+    base.expensesPaid-
+    vatPay-
+    usnPay-
+    taxParams.fixedContrib-
+    addContrib
+  );
+
+  return {
+    key:variant.key,
+    title:variant.baseTitle,
+    reference:Boolean(variant.reference),
+    vatRate,
+    revenueTotal:base.revenueTotal,
+    revenuePaid:base.revenuePaid,
+    expensesTotal:base.expensesTotal,
+    expensesPaid:base.expensesPaid,
+    inputVatExpenseUsn:base.inputVatExpenseUsn,
+    inputVatDeductibleDocs:base.inputVatDeductibleDocs,
+    vatDocsMinusExpenseVat:base.vatDocsMinusExpenseVat,
+    advanceBase,
+    vatSales,
+    vatAdvance,
+    vatAccrued,
+    inputVatDeduction,
+    vatPay,
+    vatCarry,
+    incomeForUsn,
+    expensesForUsn,
+    netSalesAccrual,
+    netExpensesAccrual,
+    accrualResult,
+    addBase,
+    addContrib,
+    usnBase,
+    usn15,
+    minTax,
+    usnPay,
+    fixedContrib:taxParams.fixedContrib,
+    maxAddContrib:taxParams.maxAddContrib,
+    totalTaxes,
+    financialResult,
+    residualShare:base.revenuePaid>0?financialResult/base.revenuePaid:0
+  };
+}
+
+function validateState(state,base){
+  const errors=[];
+  const warnings=[];
+  const labels={
+    revenueTotal:"Продажи по документам",
+    revenuePaid:"Оплачено клиентами",
+    expensesTotal:"Документы поставщиков",
+    expensesPaid:"Оплачено поставщикам",
+    inputVatExpenseUsn:"НДС в оплаченных расходах",
+    inputVatDeductibleDocs:"Входной НДС по документам"
+  };
+
+  Object.keys(labels).forEach(function(key){
+    if(!Number.isFinite(state[key])||state[key]<0){
+      errors.push(labels[key]+": укажите неотрицательное числовое значение.");
+    }
+  });
+
+  if(base.inputVatExpenseUsn>base.expensesPaid){
+    warnings.push("НДС в оплаченных расходах больше оплаченной суммы. Проверьте ввод.");
+  }
+  if(base.inputVatDeductibleDocs>base.expensesTotal){
+    warnings.push("Входной НДС по документам больше суммы документов. Проверьте ввод.");
+  }
+  if(base.inputVatDeductibleDocs<base.inputVatExpenseUsn){
+    warnings.push("Входной НДС по документам меньше НДС в оплаченных расходах. Проверьте структуру данных.");
+  }
+  if(base.revenuePaid>base.revenueTotal){
+    warnings.push("Оплаты клиентов превышают продажи по документам. Разница считается незакрытым авансом и облагается НДС по расчётной ставке.");
+  }
+  if(base.expensesPaid>base.expensesTotal){
+    warnings.push("Оплачено поставщикам больше суммы документов. Проверьте ввод.");
+  }
+
+  return {errors,warnings};
+}
+
+function selectVatWinner(results){
+  const ranked=VAT_VARIANTS
+    .map(function(variant){return results[variant.key];})
+    .slice()
+    .sort(function(a,b){return b.financialResult-a.financialResult;});
+
+  if(ranked.length>1&&Math.abs(ranked[0].financialResult-ranked[1].financialResult)<=.01){
+    return {
+      winner:null,
+      tie:true,
+      advantage:0,
+      ranked
+    };
+  }
+
+  return {
+    winner:ranked[0],
+    tie:false,
+    advantage:ranked.length>1
+      ?round2(ranked[0].financialResult-ranked[1].financialResult)
+      :null,
+    ranked
+  };
+}
+
+function calcAll(stateOverride){
+  const state=normalizeState(stateOverride||readState());
+  const taxParams=TAX_PARAMS_BY_YEAR[state.calculationYear];
+  const base=scenarioBase(state);
+  const validation=validateState(state,base);
+  const results={};
+
+  VARIANTS.forEach(function(variant){
+    results[variant.key]=calcVariant(variant,base,taxParams);
+  });
+
+  const selection=selectVatWinner(results);
+
+  return {
+    state,
+    taxParams,
+    base,
+    results,
+    validation,
+    winner:validation.errors.length?null:selection.winner,
+    tie:validation.errors.length?false:selection.tie,
+    advantage:validation.errors.length?null:selection.advantage,
+    ranked:selection.ranked
+  };
+}
+
+function render(options){
+  const data=calcAll();
+  if(inputErrors.size){
+    data.validation.errors.push("Проверьте выделенные поля. Показан остаток денег по последним корректным значениям; ошибочный ввод не применён.");
+    data.winner=null;
+    data.tie=false;
+    data.advantage=null;
+  }
+
+  window.__ndsUsn15Calculator={
+    calcAll,
+    last:data,
+    TAX_PARAMS_BY_YEAR,
+    COMMON_TAX_PARAMS,
+    SOURCE_RATIOS
+  };
+
+  updateSliders(data.state,options&&options.skipPercentInputId);
+  renderYear(data);
+  renderHeader(data);
+  renderBanner(data);
+  renderOwnerCards("comparisonCards",data);
+  renderDetail(data);
+}
+
+function renderYear(data){
+  const year=String(data.state.calculationYear);
+  el("comparisonYear").textContent=year;
+  el("paramsYear").textContent=year;
+  el("fixedContribRef").textContent=wholeMoney(data.taxParams.fixedContrib);
+  el("maxAddContribRef").textContent=wholeMoney(data.taxParams.maxAddContrib);
+}
+
+function renderHeader(data){
+  const badge=el("bestBadge");
+  badge.classList.toggle("is-pending",data.validation.errors.length>0);
+
+  if(data.validation.errors.length){
+    el("bestCaption").textContent="Расчёт приостановлен:";
+    el("bestLabel").textContent="Проверьте данные";
+    el("bestValue").textContent="";
+    badge.title=data.validation.errors.join(" ");
+    return;
+  }
+
+  if(data.tie){
+    el("bestCaption").textContent="Остаток денег при НДС:";
+    el("bestLabel").textContent="Почти одинаково";
+    el("bestValue").textContent=compactMoney(data.ranked[0].financialResult);
+    badge.title="Расчётный остаток денег в лучших вариантах НДС отличается не более чем на 0,01 ₽.";
+    return;
+  }
+
+  el("bestCaption").textContent="Максимум остатка среди ставок НДС:";
+  el("bestLabel").textContent=data.winner.title;
+  el("bestValue").textContent=compactMoney(data.winner.financialResult);
+  badge.title="Расчётный остаток денег на "+money(data.advantage||0)+" больше, чем при варианте «"+data.ranked[1].title+"». Это не прибыль и не рекомендация перейти на ставку.";
+}
+
+function renderBanner(data){
+  const banner=el("decisionBanner");
+  const year=data.state.calculationYear;
+
+  if(data.validation.errors.length){
+    banner.className="banner bad";
+    banner.textContent=data.validation.errors.join(" ");
+  }else if(data.tie){
+    banner.className="banner info";
+    banner.textContent="При этих исходных данных в "+year+" году расчётный остаток денег в лучших вариантах с НДС отличается не более чем на 0,01 ₽. Существенной разницы по остатку денег нет.";
+  }else{
+    banner.className="banner info";
+    banner.textContent=
+      "При этих исходных данных и одинаковых ценах для покупателей в "+year+
+      " году расчётный остаток денег в варианте «"+data.winner.title+"» — "+
+      money(data.winner.financialResult)+". Это на "+money(data.advantage||0)+
+      " больше, чем при варианте «"+data.ranked[1].title+"».";
+  }
+
+  // Только пояснение об авансах сворачиваем; предупреждения о данных остаются видимыми.
+  const notes=[];
+  const warnings=[];
+  data.validation.warnings.forEach(function(message){
+    if(message.startsWith("Оплаты клиентов превышают продажи по документам."))notes.push(message);
+    else warnings.push(message);
+  });
+
+  el("warningList").hidden=warnings.length===0;
+  el("warningList").innerHTML=warnings.map(function(message){
+    return '<div class="banner warn" style="margin:0">'+escapeHtml(message)+"</div>";
+  }).join("");
+  el("notesCount").textContent="· "+notes.length;
+  el("notesList").innerHTML=notes.map(function(message){
+    return "<p>"+escapeHtml(message)+"</p>";
+  }).join("");
+  el("calculationNotes").hidden=notes.length===0;
+  if(!notes.length)el("calculationNotes").open=false;
+}
+
+function tagFor(result,data){
+  if(result.reference)return ["справочно","compare"];
+  if(data.winner&&data.winner.key===result.key)return ["максимум","best"];
+  if(data.tie&&data.ranked.length&&
+    Math.abs(result.financialResult-data.ranked[0].financialResult)<=.01){
+    return ["одинаково","compare"];
+  }
+  return ["сравнение","compare"];
+}
+
+function cardClass(result,data){
+  const isWinner=data.winner&&data.winner.key===result.key;
+  return "scenario-card mini"+
+    (isWinner?" is-winner":"")+
+    (!isWinner&&!result.reference?" is-compare":"")+
+    (result.reference?" is-reference":"");
+}
+
+function renderOwnerCards(target,data){
+  const container=el(target);
+
+  container.innerHTML=VARIANTS.map(function(variant){
+    const result=data.results[variant.key];
+    const tag=tagFor(result,data);
+    return '<div class="'+cardClass(result,data)+'">'+
+      '<div class="mini-head"><h3 class="name">'+escapeHtml(result.title)+'</h3><span class="tag '+tag[1]+'">'+tag[0]+'</span></div>'+
+      '<div class="owner-metrics">'+
+        '<div class="owner-metric primary">'+
+          '<span>Остаток денег за год</span>'+
+          '<strong class="finance-value '+(result.financialResult<0?"minus":"")+'">'+compactMoney(result.financialResult)+'</strong>'+
+        '</div>'+
+        '<div class="owner-metric"><span>НДС, УСН и взносы</span><strong>'+compactMoney(result.totalTaxes)+'</strong></div>'+
+        '<div class="owner-metric"><span>Доля остатка денег в поступлениях</span><strong>'+pct(result.residualShare)+'</strong></div>'+
+      '</div>'+
+      (result.reference?'<p class="reference-note">Для сравнения. Не участвует в выборе ставки.</p>':"")+
+    '</div>';
+  }).join("");
+}
+
+function renderDetail(data){
+  const usnRateText="УСН "+pctPlain(COMMON_TAX_PARAMS.usnRate*100);
+  const rows=[
+    ["Год расчёта","calculationYear","year"],
+    ["Продажи / выручка для НДС","revenueTotal","money"],
+    ["Оплачено клиентами","revenuePaid","money"],
+    ["Авансы в составе оплат","advanceBase","money"],
+    ["Документы от поставщиков","expensesTotal","money"],
+    ["Входной НДС по документам","inputVatDeductibleDocs","money"],
+    ["Оплачено поставщикам","expensesPaid","money"],
+    ["НДС в оплаченных расходах","inputVatExpenseUsn","money"],
+    ["Разница: документы минус КУДиР","vatDocsMinusExpenseVat","money"],
+    ["Применяемая ставка НДС","vatRate","rate"],
+    ["Чистые продажи по документам","netSalesAccrual","money"],
+    ["Расходы по документам после вычета","netExpensesAccrual","money"],
+    ["Справочная разница по документам, не прибыль","accrualResult","money"],
+    ["Доход для УСН","incomeForUsn","money"],
+    ["Расходы для УСН","expensesForUsn","money"],
+    ["НДС с продаж / отгрузки","vatSales","money"],
+    ["НДС с авансов","vatAdvance","money"],
+    ["НДС начисленный всего","vatAccrued","money"],
+    ["НДС к вычету","inputVatDeduction","money"],
+    ["НДС к уплате","vatPay","money"],
+    ["НДС к переносу","vatCarry","money"],
+    ["База дополнительного 1% ИП","addBase","money"],
+    ["Дополнительный 1% ИП","addContrib","money"],
+    ["Максимум дополнительного 1%","maxAddContrib","money"],
+    ["База УСН","usnBase","money"],
+    [usnRateText,"usn15","money"],
+    ["Минимальный налог 1%","minTax","money"],
+    ["УСН к уплате","usnPay","money"],
+    ["Фиксированные взносы ИП","fixedContrib","money"],
+    ["НДС, УСН и взносы","totalTaxes","money","total"],
+    ["Остаток денег после оплат, налогов и взносов","financialResult","money","result"],
+    ["Доля остатка денег в поступлениях","residualShare","pct"]
+  ];
+
+  const values=VARIANTS.map(function(variant){
+    return data.results[variant.key];
+  });
+
+  el("detailRows").innerHTML=rows.map(function(row){
+    const cells=values.map(function(result){
+      const raw=row[1]==="calculationYear"
+        ?data.state.calculationYear
+        :result[row[1]];
+      let value;
+      if(row[2]==="money")value=money(raw);
+      else if(row[2]==="pct")value=pct(raw);
+      else if(row[2]==="rate")value=raw===0?"Без НДС":pctPlain(raw*100);
+      else value=String(raw);
+
+      const classes=[];
+      if(raw<0)classes.push("minus");
+      if(raw===0)classes.push("muted");
+      if(result.reference)classes.push("offcol");
+      if(data.winner&&data.winner.key===result.key)classes.push("wcol","wval");
+
+      return '<td class="'+classes.join(" ")+'">'+value+"</td>";
+    }).join("");
+
+    return '<tr class="'+(row[3]||"")+'"><td>'+escapeHtml(row[0])+"</td>"+cells+"</tr>";
+  }).join("");
+}
+
+function updateSliders(state,skipInputId){
+  setSlider("buyerChange","buyerChangeInput",state.buyerChange,skipInputId);
+  setSlider("supplierChange","supplierChangeInput",state.supplierChange,skipInputId);
+}
+
+function setSlider(id,inputId,value,skipInputId){
+  const input=el(id);
+  const v=clampChangeValue(Number(value)||0);
+  input.value=v;
+  const textInput=el(inputId);
+  if(textInput&&inputId!==skipInputId&&!inputErrors.has(inputId))textInput.value=pctInput(v);
+  const min=Number(input.min);
+  const max=Number(input.max);
+  input.style.setProperty("--pct",((v-min)/(max-min)*100)+"%");
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function init(){
+  resetValues();
+  const header=document.querySelector(".app-header");
+  function syncHeaderHeight(){
+    document.documentElement.style.setProperty("--header-height",Math.ceil(header.getBoundingClientRect().height)+"px");
+  }
+  syncHeaderHeight();
+  if(typeof ResizeObserver!=="undefined")new ResizeObserver(syncHeaderHeight).observe(header);
+  else window.addEventListener("resize",syncHeaderHeight);
+
+  document.querySelectorAll("input").forEach(function(input){
+    input.addEventListener("input",function(){
+      if(input.id==="buyerChangeInput"){
+        handlePercentInput("buyerChange",input.value,false);
+        render({skipPercentInputId:input.id});
+        return;
+      }
+      if(input.id==="supplierChangeInput"){
+        handlePercentInput("supplierChange",input.value,false);
+        render({skipPercentInputId:input.id});
+        return;
+      }
+      if(input.type==="range")handleSliderInput(input.id);
+      else if(!input.readOnly)handleManualFieldInput(input.id,false);
+      render();
+    });
+
+    input.addEventListener("blur",function(){
+      if(input.type==="range"||input.readOnly)return;
+      if(input.id==="buyerChangeInput"){
+        handlePercentInput("buyerChange",input.value,true);
+        render();
+        return;
+      }
+      if(input.id==="supplierChangeInput"){
+        handlePercentInput("supplierChange",input.value,true);
+        render();
+        return;
+      }
+      handleManualFieldInput(input.id,true);
+      render();
+    });
+  });
+
+  el("calculationYear").addEventListener("change",function(){
+    refreshCurrentFields(null,true);
+    render();
+  });
+  el("resetBtn").addEventListener("click",resetValues);
+}
+
+function el(id){
+  return document.getElementById(id);
+}
+
+init();
+</script>
+</body>
+</html>
